@@ -1,2 +1,11 @@
+# Files that don't need to be tracked
 /lambda/py/skill_env
+
+# Don't want people seein mah buckets
 /lambda/py/resources.py
+
+# Wont need all thousand of these files
+/lambda/skill_env
+
+# This file is like herpes, it's everywhere...
+.DS_Store
