@@ -5,7 +5,6 @@ import random
 import logging
 import resources
 import math
-from random import randint
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import (
@@ -18,7 +17,6 @@ from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
 
 sb = SkillBuilder()
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -26,6 +24,7 @@ logger.setLevel(logging.INFO)
 # Constants and Other Data, Vars, etc...
 # ==================================================================================================================================
 SKILL_NAME = "Cougar Roar"
+TEST_MESSAGE = "THIS IS A TEST"
 HELP_MESSAGE = "You can say tell me to roar like a cougar, or, you can say exit... What can I help you with?"
 HELP_REPROMPT = "What can I help you with?"
 STOP_MESSAGE = "Goodbye!"
@@ -38,11 +37,10 @@ EXCEPTION_MESSAGE = "Sorry. I cannot help you with that."
 # =====================================================================
 
 # Function to grab a random roar
-def getRandomEntry(list):
-	idx = randint(0, len(resources.AUDIO) - 1)
-	return list[idx]
-
-
+def getRandomRoar(inputList):
+    """Gets a random entry from a list"""
+    randomRoar = random.choice(list(inputList))
+    return inputList[randomRoar]
 # =====================================================================
 # Handlers
 # =====================================================================
@@ -53,17 +51,18 @@ class RoarHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("GetNewSpaceFactIntent")(handler_input))
+                is_intent_name("RoarIntent")(handler_input))
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.info("In GetNewFactHandler")
+        logger.info("In RoarHandler")
 
-        random_fact = random.choice(data)
-        speech = GET_FACT_MESSAGE + random_fact
+        roar = getRandomRoar(resources.AUDIO)
+
+        speech = '<audio src=\"' + roar + '"\/>'
 
         handler_input.response_builder.speak(speech).set_card(
-            SimpleCard(SKILL_NAME, random_fact))
+            SimpleCard(SKILL_NAME, "Cougar Roar"))
         return handler_input.response_builder.response
 
 # Help handler (AmazonHelpIntent)
@@ -168,7 +167,7 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug("Alexa Response: {}".format(response))
 
 # Register intent handlers for the skill builder (sb)
-sb.add_request_handler(GetNewFactHandler())
+sb.add_request_handler(RoarHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
@@ -178,8 +177,8 @@ sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 # TODO: Uncomment the following lines of code for request, response logs.
-# sb.add_global_request_interceptor(RequestLogger())
-# sb.add_global_response_interceptor(ResponseLogger())
+sb.add_global_request_interceptor(RequestLogger())
+sb.add_global_response_interceptor(ResponseLogger())
 
 # Handler name that is used on AWS lambda
 lambda_handler = sb.lambda_handler()
