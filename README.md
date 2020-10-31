@@ -2,6 +2,7 @@
 An Alexa Skill that makes Alexa play a cougar roar sound.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/jpburnett/cougar-roar-alexa-skill/master/LICENSE)
+[![Python 3.8.5](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
 ## Motivation
 This skill came about because Alexa could roar like a lion but not a cougar...
