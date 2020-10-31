@@ -1,11 +1,14 @@
-# Files that don't need to be tracked
-/lambda/py/skill_env
+# ignore file
+node_modules/
+dump/
 
-# Don't want people seein mah buckets
-/lambda/py/resources.py
+skill_env/
+pyenv/
+lambda/py/utils/resources.py
+__pycache__/
 
-# Wont need all thousand of these files
-/lambda/skill_env
+# Ignore all specifics
+*.zip
 
 # This file is like herpes, it's everywhere...
 .DS_Store
